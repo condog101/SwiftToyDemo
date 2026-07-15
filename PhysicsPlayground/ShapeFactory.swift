@@ -81,7 +81,9 @@ enum ShapeFactory {
             restitution: bounciness          // "restitution" = physics-speak for bounciness
         )
         entity.components.set(PhysicsBodyComponent(
-            massProperties: .init(mass: Tweakables.mass),
+            // The mass properties describe how heavy the shape is and how
+            // it spins — RealityKit works that out from the collision shape.
+            massProperties: .init(shape: collisionShape, mass: Tweakables.mass),
             material: surface,
             mode: .dynamic                   // .dynamic = "moves freely under physics"
         ))
@@ -145,7 +147,10 @@ enum ShapeFactory {
 
         let w = width, h = height, d = depth, t = wallThickness
 
-        room.addChild(invisibleSlab(size: [w, t, d], position: [0, -h / 2 - t / 2, 0], name: "floor"))
+        // The physics floor's TOP surface lines up with the top of the
+        // visible plate (2 cm above the bottom of the box), so shapes rest
+        // ON the plate instead of sinking into it.
+        room.addChild(invisibleSlab(size: [w, t, d], position: [0, -h / 2 + 0.02 - t / 2, 0], name: "floor"))
         room.addChild(invisibleSlab(size: [w, t, d], position: [0, h / 2 + t / 2, 0], name: "ceiling"))
         room.addChild(invisibleSlab(size: [t, h, d], position: [-w / 2 - t / 2, 0, 0], name: "leftWall"))
         room.addChild(invisibleSlab(size: [t, h, d], position: [w / 2 + t / 2, 0, 0], name: "rightWall"))

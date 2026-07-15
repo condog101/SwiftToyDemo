@@ -35,9 +35,6 @@ struct PlaygroundView: View {
     /// them is easy (we never accidentally delete the floor!).
     @State private var shapesContainer = Entity()
 
-    /// Remembers what a shape's physics was doing before we grabbed it.
-    @State private var draggedEntity: ModelEntity? = nil
-
     var body: some View {
         RealityView { content in
             // ----- This closure runs ONCE, when the window opens. -----
@@ -58,6 +55,11 @@ struct PlaygroundView: View {
             rootEntity.addChild(shapesContainer)
 
             content.add(rootEntity)
+
+            // A brand-new scene starts empty, so make sure the control
+            // panel's counter agrees (matters if this window is closed
+            // and reopened).
+            settings.shapeCount = 0
         }
         // ----- Reacting to the control panel -----
 
@@ -107,24 +109,26 @@ struct PlaygroundView: View {
             DragGesture()
                 .targetedToAnyEntity()
                 .onChanged { value in
+                    // `parent` is nil if the shape was deleted mid-drag
+                    // (e.g. someone pressed Reset) — bail out safely.
                     guard let shape = value.entity as? ModelEntity,
-                          shape.name == "shape" else { return }
+                          shape.name == "shape",
+                          let parent = shape.parent,
+                          var physicsBody = shape.components[PhysicsBodyComponent.self]
+                    else { return }
 
                     // While being carried, the shape must ignore gravity —
                     // otherwise it fights your hand. ".kinematic" means
                     // "moved by code, not by physics".
-                    if draggedEntity !== shape {
-                        draggedEntity = shape
-                        if var physicsBody = shape.components[PhysicsBodyComponent.self] {
-                            physicsBody.mode = .kinematic
-                            shape.components.set(physicsBody)
-                        }
+                    if physicsBody.mode != .kinematic {
+                        physicsBody.mode = .kinematic
+                        shape.components.set(physicsBody)
                     }
 
                     // The gesture gives us a position in "view" coordinates;
                     // convert it into the shape's parent's coordinate space
                     // so we can move the shape there.
-                    var target = value.convert(value.location3D, from: .local, to: shape.parent!)
+                    var target = value.convert(value.location3D, from: .local, to: parent)
 
                     // Keep it inside the box (leave a small margin so it
                     // doesn't get pushed inside a wall).
@@ -135,16 +139,18 @@ struct PlaygroundView: View {
 
                     shape.position = target
                 }
-                .onEnded { _ in
+                .onEnded { value in
                     // Let go: hand control back to the physics engine.
-                    if let shape = draggedEntity,
+                    // (We ask the gesture WHICH shape was released — with
+                    // two hands you can drag two shapes at once!)
+                    if let shape = value.entity as? ModelEntity,
+                       shape.name == "shape",
                        var physicsBody = shape.components[PhysicsBodyComponent.self] {
                         physicsBody.mode = .dynamic
                         shape.components.set(physicsBody)
                         // CHALLENGE 4.1: throw the shape by giving it the
                         // velocity your hand was moving at. See CHALLENGES.md!
                     }
-                    draggedEntity = nil
                 }
         )
     }
