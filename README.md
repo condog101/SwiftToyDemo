@@ -62,6 +62,11 @@ to change. Edit a number, press ▶ again, see the difference. Some ideas:
 Then work through **[CHALLENGES.md](CHALLENGES.md)** — a graded set of
 challenges from "change one number" to "add a whole new feature".
 
+**In the classroom?** There's a structured one-lesson worksheet too:
+**[WORKSHEET.md](WORKSHEET.md)** on screen, or **`worksheet.html`** for a
+printable paper handout (open it in a browser and print; the answer key is
+on the last page for teachers).
+
 ## Map of the code
 
 All the Swift lives in the `PhysicsPlayground/` folder:
