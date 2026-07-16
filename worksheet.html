@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Physics Playground — Lesson Worksheet</title>
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --accent: #0e7490;
+    --line: #94a3b8;
+    --soft: #f1f5f9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    margin: 0 auto;
+    max-width: 820px;
+    padding: 2rem 1.5rem;
+    line-height: 1.45;
+    background: #fff;
+  }
+  header { border-bottom: 3px solid var(--accent); padding-bottom: .6rem; margin-bottom: 1rem; }
+  h1 { font-size: 1.6rem; margin: 0 0 .3rem; }
+  h2 {
+    font-size: 1.1rem; color: var(--accent);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: .2rem; margin: 1.6rem 0 .7rem;
+  }
+  .meta { display: flex; gap: 1.5rem; flex-wrap: wrap; margin: .8rem 0; font-size: .95rem; }
+  .meta span { flex: 1 1 180px; border-bottom: 1px solid var(--ink); padding-bottom: 2px; white-space: nowrap; }
+  .timing { float: right; font-size: .8rem; color: #555; font-weight: normal; }
+  code, pre {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--soft); border-radius: 4px; padding: 0 .3em; font-size: .92em;
+  }
+  table { border-collapse: collapse; width: 100%; margin: .6rem 0; font-size: .95rem; }
+  th, td { border: 1px solid var(--line); padding: .35rem .5rem; text-align: left; vertical-align: top; }
+  th { background: var(--soft); }
+  .writein {
+    border-bottom: 1px solid var(--ink);
+    display: inline-block; min-width: 8rem;
+  }
+  .lines { margin: .4rem 0 .9rem; }
+  .lines div { border-bottom: 1px solid var(--line); height: 1.5rem; }
+  ul.check { list-style: none; padding-left: 0; }
+  ul.check li { margin: .3rem 0; }
+  ul.check li::before {
+    content: ""; display: inline-block; width: .85em; height: .85em;
+    border: 1.5px solid var(--ink); border-radius: 2px;
+    margin-right: .55em; vertical-align: -0.08em;
+  }
+  .q { font-weight: 600; }
+  .experiment { border: 1px solid var(--line); border-radius: 6px; padding: .6rem .8rem; margin: .8rem 0; page-break-inside: avoid; }
+  .experiment h3 { margin: 0 0 .3rem; font-size: 1rem; }
+  .objectives { background: var(--soft); border-radius: 6px; padding: .7rem 1rem .7rem 2rem; }
+  .hint { color: #555; font-size: .9rem; }
+  .answers {
+    page-break-before: always;
+    border-top: 4px double var(--accent); margin-top: 2rem; padding-top: 1rem;
+  }
+  .teacher-banner {
+    background: #fee2e2; border: 2px solid #b91c1c; color: #7f1d1d;
+    border-radius: 6px; padding: .5rem .8rem; font-weight: 700; margin-bottom: 1rem;
+  }
+  footer { margin-top: 2rem; font-size: .8rem; color: #666; text-align: center; }
+  @media print {
+    body { max-width: none; padding: 0; font-size: 11pt; }
+    a { color: inherit; text-decoration: none; }
+    .noprint { display: none; }
+  }
+  @page { size: A4; margin: 16mm; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📝 Physics Playground — Lesson Worksheet</h1>
+  <div>Programming an Apple Vision Pro app in Swift · one lesson (~60 min)</div>
+  <div class="meta">
+    <span>Name:</span>
+    <span>Date:</span>
+    <span>Class:</span>
+  </div>
+</header>
+
+<p class="noprint hint">💻 On screen? The same worksheet lives in <code>WORKSHEET.md</code>.
+To print this page use your browser's Print… command. <strong>Teachers:</strong> the answer key
+is on the final page — print it separately.</p>
+
+<h2>Learning objectives</h2>
+<ol class="objectives">
+  <li>Explain what a <strong>constant</strong> is and why programmers name their values.</li>
+  <li>Recognise some Swift <strong>data types</strong>: <code>Float</code>, <code>Int</code>, <code>Bool</code>, arrays and ranges.</li>
+  <li>Use the <strong>edit → compile → run</strong> cycle to change a real 3D app.</li>
+  <li>Read code you didn't write and predict what changing it will do.</li>
+</ol>
+
+<h2>Starter — before you touch the Mac <span class="timing">5 min</span></h2>
+<p>Match each term to its meaning by writing the letter:</p>
+<table>
+  <tr><th>Term</th><th>Your answer</th><th>Meaning</th></tr>
+  <tr><td>1. Constant</td><td></td><td>A. A decimal number, like <code>-9.8</code> or <code>0.5</code></td></tr>
+  <tr><td>2. <code>Float</code></td><td></td><td>B. A list of values, written like <code>[.red, .blue]</code></td></tr>
+  <tr><td>3. Array</td><td></td><td>C. A named value that is set once and doesn't change while the app runs</td></tr>
+  <tr><td>4. Range</td><td></td><td>D. A true/false value</td></tr>
+  <tr><td>5. <code>Bool</code></td><td></td><td>E. Everything between a lowest and highest value, written like <code>0.06...0.14</code></td></tr>
+</table>
+
+<h2>Task 1 — Run the app <span class="timing">10 min</span></h2>
+<p>Tick each step as you do it:</p>
+<ul class="check">
+  <li>Double-click <code>PhysicsPlayground.xcodeproj</code> to open it in Xcode.</li>
+  <li>At the top of the window, choose the <strong>Apple Vision Pro</strong> simulator.</li>
+  <li>Press the <strong>▶ Run</strong> button (the first build is slow — be patient!).</li>
+  <li>When the two windows appear, press <strong>Spawn shapes!</strong> a few times.</li>
+</ul>
+<p class="q">Q1. What happens when you <em>click</em> (tap) a shape?</p>
+<div class="lines"><div></div></div>
+<p class="q">Q2. What happens when you click a shape and <em>hold and drag</em> it?</p>
+<div class="lines"><div></div></div>
+<p class="q">Q3. Slide the <strong>Gravity</strong> slider slowly from −9.8 up to +5.
+Describe what happens as it passes 0.</p>
+<div class="lines"><div></div><div></div></div>
+
+<h2>Task 2 — Predict, change, observe <span class="timing">20 min</span></h2>
+<p>Open <code>Tweakables.swift</code> (in the list on the left of Xcode, inside the
+<code>PhysicsPlayground</code> folder). For each experiment: <strong>write your prediction
+FIRST</strong>, then make the change, press ▶, and write what actually happened.
+Undo the change (⌘Z) before the next experiment.</p>
+
+<div class="experiment">
+  <h3>Experiment A — Moon gravity</h3>
+  <p>Change <code>gravity</code> from <code>[0, -9.8, 0]</code> to <code>[0, -1.6, 0]</code>.</p>
+  <p class="q">I predict:</p><div class="lines"><div></div></div>
+  <p class="q">What happened:</p><div class="lines"><div></div></div>
+</div>
+
+<div class="experiment">
+  <h3>Experiment B — Shape confetti</h3>
+  <p>Change <code>spawnCountPerTap</code> from <code>1</code> to <code>10</code>.</p>
+  <p class="q">I predict:</p><div class="lines"><div></div></div>
+  <p class="q">What happened:</p><div class="lines"><div></div></div>
+</div>
+
+<div class="experiment">
+  <h3>Experiment C — Trampoline world</h3>
+  <p>Change <code>bounciness</code> from <code>0.6</code> to <code>1.1</code>.</p>
+  <p class="q">I predict:</p><div class="lines"><div></div></div>
+  <p class="q">What happened:</p><div class="lines"><div></div></div>
+  <p class="q">Think: in real life, a ball can never bounce <em>higher</em> than it was
+  dropped from. Why not? Where would the extra energy come from?</p>
+  <div class="lines"><div></div><div></div></div>
+</div>
+
+<div class="experiment">
+  <h3>Experiment D — Boulders</h3>
+  <p>Change <code>shapeSize</code> from <code>0.06...0.14</code> to <code>0.2...0.3</code>.</p>
+  <p class="q">I predict:</p><div class="lines"><div></div></div>
+  <p class="q">What happened:</p><div class="lines"><div></div></div>
+</div>
+
+<h2>Task 3 — Read the code <span class="timing">15 min</span></h2>
+<p class="q">Q4. In <code>Tweakables.swift</code>: what <strong>data type</strong> is <code>mass</code>?
+What data type is <code>metallicShapes</code>?</p>
+<p><code>mass</code> is a <span class="writein"></span> &nbsp;&nbsp;
+<code>metallicShapes</code> is a <span class="writein"></span></p>
+
+<p class="q">Q5. <code>shapeSize</code> is written with TWO numbers: <code>0.06...0.14</code>.
+Why two? What does the app do with them? <span class="hint">(Hint: read the comment above it.)</span></p>
+<div class="lines"><div></div><div></div></div>
+
+<p class="q">Q6. What would happen if you changed <code>enabledShapes</code> to just <code>[.sphere]</code>?</p>
+<div class="lines"><div></div></div>
+
+<p class="q">Q7. Open <code>ShapeFactory.swift</code> and find the function <code>makeRoom</code>.
+The walls of the playground are <em>invisible but solid</em>. Read the comments: what is
+missing from a wall entity that makes it invisible?</p>
+<div class="lines"><div></div></div>
+
+<p class="q">Q8. In <code>makeShape</code>, the code attaches several “components” to each shape.
+Which component makes gravity affect the shape?
+<span class="hint">(Hint: its name contains the word “physics”.)</span></p>
+<div class="lines"><div></div></div>
+
+<h2>Plenary <span class="timing">5 min</span></h2>
+<p class="q">Q9. In your own words, describe the <strong>edit → compile → run</strong> cycle you used today:</p>
+<div class="lines"><div></div><div></div></div>
+<p class="q">Q10. If you had another hour, what ONE feature would you add to this app,
+and which file do you think you'd change?</p>
+<p>Feature: <span class="writein" style="min-width:24rem"></span><br>
+File: <span class="writein" style="min-width:14rem"></span></p>
+
+<h2>Finished early? 🚀</h2>
+<p>Open <code>CHALLENGES.md</code> in the project and start on the <strong>Level 1</strong>
+challenges — they carry straight on from Task 2. Level 2 awaits the brave.</p>
+
+<section class="answers">
+  <div class="teacher-banner">🔑 TEACHERS ONLY — answer key. Print the previous pages for students; keep this one.</div>
+  <p><strong>Starter:</strong> 1 = C, 2 = A, 3 = B, 4 = E, 5 = D</p>
+  <p><strong>Q1.</strong> The shape gets flicked/knocked into the air (an impulse is applied), with a bit of random sideways movement.</p>
+  <p><strong>Q2.</strong> The shape follows the pointer — you carry it around; when released it falls under gravity again.</p>
+  <p><strong>Q3.</strong> Falling slows as gravity approaches 0 (shapes drift/float); past 0 gravity points upwards, so shapes fall <em>up</em> and pile against the ceiling.</p>
+  <p><strong>A:</strong> everything falls and bounces in slow motion (Moon gravity ≈ 1/6 of Earth's).
+     <strong>B:</strong> ten shapes rain down per press.
+     <strong>C:</strong> each bounce is bigger than the last — chaos. (Real bounces lose energy to heat/sound; gaining energy would break conservation of energy.)
+     <strong>D:</strong> far bigger shapes; only a few fit in the cube.</p>
+  <p><strong>Q4.</strong> <code>mass</code> is a <code>Float</code> (decimal number); <code>metallicShapes</code> is a <code>Bool</code> (true/false).</p>
+  <p><strong>Q5.</strong> It's a <em>range</em>: every new shape gets a random size between the two numbers, so shapes vary.</p>
+  <p><strong>Q6.</strong> Only spheres would spawn — a ball pit.</p>
+  <p><strong>Q7.</strong> A wall has no <strong>ModelComponent</strong> (no mesh/material), so nothing is drawn — but its CollisionComponent still makes it solid.</p>
+  <p><strong>Q8.</strong> The <strong>PhysicsBodyComponent</strong> (in <code>.dynamic</code> mode).</p>
+  <p><strong>Q9.</strong> Any sensible description of: change the code → press Run so Xcode compiles it → the app launches → observe → repeat.</p>
+  <p><strong>Q10.</strong> Open answer — good ones name a sensible file (<code>Tweakables.swift</code> for values, <code>ControlPanelView.swift</code> for buttons, <code>ShapeFactory.swift</code> for new shapes).</p>
+</section>
+
+<footer>Physics Playground · a Swift/visionOS teaching project · worksheet v1</footer>
+
+</body>
+</html>
